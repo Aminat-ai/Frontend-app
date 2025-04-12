@@ -3,60 +3,352 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Guessing Game</title>
+    <title>Birthday Invitation</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Poppins:wght@300;400;600&display=swap');
         
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #fef6f6;
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            overflow-x: hidden;
+        }
+        
+        .invitation-container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s;
+        }
+        
+        .invitation-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="white" fill-opacity="1" d="M0,192L48,197.3C96,203,192,213,288,229.3C384,245,480,267,576,250.7C672,235,768,181,864,181.3C960,181,1056,235,1152,234.7C1248,235,1344,181,1392,154.7L1440,128L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>') no-repeat;
+            background-size: cover;
+        }
+        
+        h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            margin: 0;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            color: white;
+            margin-top: 10px;
+            font-weight: 300;
+        }
+        
+        .content {
+            padding: 30px;
+            position: relative;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f48fb1;
+            opacity: 0;
+        }
+        
+        .message {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .details {
+            background: #fff9f9;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .detail-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+        
+        .icon {
+            width: 40px;
+            height: 40px;
+            background: #ff9a9e;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.2rem;
+        }
+        
+        .detail-text {
+            flex: 1;
+        }
+        
+        .detail-text h3 {
+            margin: 0 0 5px 0;
+            font-size: 1.1rem;
+            color: #ff6b81;
+        }
+        
+        .detail-text p {
+            margin: 0;
+            color: #666;
+        }
+        
+        .rsvp {
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .rsvp-btn {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(255, 105, 140, 0.4);
+            font-weight: 600;
+        }
+        
+        .rsvp-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 105, 140, 0.6);
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #888;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .animation-container {
+            height: 100px;
+            position: relative;
+            overflow: hidden;
+            margin: 30px 0;
+        }
+        
+        .balloon {
+            position: absolute;
+            width: 40px;
+            height: 50px;
+            background: #ff9a9e;
+            border-radius: 50%;
+            bottom: -50px;
+            animation: float 8s ease-in infinite;
+        }
+        
+        .balloon::before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 40px;
+            background: #ccc;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .balloon:nth-child(2) {
+            left: 20%;
+            background: #f48fb1;
+            animation-delay: 1s;
+            width: 35px;
+            height: 45px;
+        }
+        
+        .balloon:nth-child(3) {
+            left: 40%;
+            background: #ce93d8;
+            animation-delay: 2s;
+            width: 30px;
+            height: 40px;
+        }
+        
+        .balloon:nth-child(4) {
+            left: 60%;
+            background: #b39ddb;
+            animation-delay: 3s;
+        }
+        
+        .balloon:nth-child(5) {
+            left: 80%;
+            background: #90caf9;
+            animation-delay: 4s;
+            width: 35px;
+            height: 45px;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                bottom: -50px;
+            }
+            100% {
+                transform: translateY(-500px) rotate(10deg);
+                bottom: 500px;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .details {
+                padding: 15px;
+            }
+        }
     </style>
 </head>
 <body>
-
-    <h1>Pick Your Choice</h1>
-<h4>1- Car Driving Racing World</h4>
-<h3>2- A Kitchen Crush</h3>
-<h4>3- Subway Surf</h4>
-<h3>4- Word Search</h3>
-<h4>5- Piano Fire</h4>
-<h3>6- WoW</h3>
-<h4>7- Car Race</h4>
-<h3>8- Stunt Bike Extreme</h3>
-<h4>9- Modern City</h4>
-<h3>10- Free Fire</h3>
-    <p>Guess a number between 1 and 10:</p>
-
-    <input type="number" id="guessField" min="1" max="100">
-    <button onclick="checkGuess()">Submit Guess</button>
-
-    <div class="message" id="message"></div>
+    <div class="invitation-container">
+        <div class="header">
+            <h1>You're Invited!</h1>
+            <div class="subtitle">To Celebrate My Special Day</div>
+        </div>
+        
+        <div class="content">
+            <div class="message">
+                <p>Dear <span id="guest-name">[Aj Tech]</span>,</p>
+                <p>I'm thrilled to invite you to my birthday celebration! It wouldn't be the same without you there to share in the joy, laughter, and of course, cake!</p>
+            </div>
+            
+            <div class="animation-container">
+                <div class="balloon"></div>
+                <div class="balloon"></div>
+                <div class="balloon"></div>
+                <div class="balloon"></div>
+                <div class="balloon"></div>
+            </div>
+            
+            <div class="details">
+                <div class="detail-item">
+                    <div class="icon">📅</div>
+                    <div class="detail-text">
+                        <h3>Date</h3>
+                        <p>Monday, May 19th, 2025</p>
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="icon">⏰</div>
+                    <div class="detail-text">
+                        <h3>Time</h3>
+                        <p>1:00 PM - 4:00 PM</p>
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="icon">📍</div>
+                    <div class="detail-text">
+                        <h3>Location</h3>
+                        <p>Lekki Phase 1,Lekki,Lagos,Nigeria</p>
+                        <p>(Garden Party - Dress Code: Festive & Colorful)</p>
+                    </div>
+                </div>
+                
+                <div class="detail-item">
+                    <div class="icon">🎁</div>
+                    <div class="detail-text">
+                        <h3>Gifts</h3>
+                        <p>Your presence is present enough! but if you insist,I love thoughtful suprises and anything that comes from the heart and some cash. </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="rsvp">
+                <button class="rsvp-btn" onclick="alert('Thank you for RSVPing! See you at the party!')">RSVP Now</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Please let me know by May 19th if you can make it. Can't wait to celebrate with you!</p>
+            <p>With love, [Aj tech]</p>
+        </div>
+    </div>
 
     <script>
-        // Generate a random number between 1 and 100
-        const randomNumber = Math.floor(Math.random() * 100) + 1;
-        let attempts = 0;
-
-        function checkGuess() {
-            const guess = parseInt(document.getElementById('guessField').value);
-            const message = document.getElementById('message');
-
-            attempts++;
-
-            if (guess === randomNumber) {
-                message.innerHTML = `Congratulations! You guessed the number in ${attempts} attempts.`;
-                message.style.color = "green";
-                disableInput();
-            } else if (guess < randomNumber) {
-                message.innerHTML = "Too low! Try again.";
-                message.style.color = "red";
-            } else {
-                message.innerHTML = "Too high! Try again.";
-                message.style.color = "red";
+        // Simple confetti animation
+        document.addEventListener('DOMContentLoaded', function() {
+            const content = document.querySelector('.content');
+            
+            // Create confetti
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 75%)`;
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                confetti.style.animation = `float ${Math.random() * 3 + 2}s linear infinite`;
+                content.appendChild(confetti);
+                
+                // Animate opacity
+                setTimeout(() => {
+                    confetti.style.opacity = '0.7';
+                }, Math.random() * 1000);
+            }
+            
+            // You could add more interactive elements here
+        });
+        
+        // You could add a name personalization feature
+        function personalize() {
+            const name = prompt("Enter your name to personalize the invitation:");
+            if (name) {
+                document.getElementById('guest-name').textContent = name;
             }
         }
-
-        function disableInput() {
-            document.getElementById('guessField').disabled = true;
-            document.querySelector('button').disabled = true;
-        }
+        
+        // Uncomment to enable personalization on load
+        // window.onload = personalize;
     </script>
-
 </body>
 </html>
